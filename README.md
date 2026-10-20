@@ -13,10 +13,10 @@ npm run dev              # http://localhost:5173
 ```
 The API must allow this origin: set `CORS_ORIGIN=http://localhost:5173` in the API `.env`.
 
-## Deploy (Render Static Site)
+## Deploy (Render)
 
-* New + -> **Static Site** -> pick the frontend repo
-* Build command: `npm install && npm run build`
-* Publish directory: `dist`
-* Environment variable: `VITE_API_URL=https://<your-api>.onrender.com`
-* Then put the static site URL into the API's `CORS_ORIGIN` on Render.
+The included `render.yaml` configures this repository as a Render Static Site. In Render, create a Blueprint from the frontend repository, then set `VITE_API_URL` to the deployed backend URL (no trailing slash). The static site builds with `npm ci && npm run build` and publishes `dist`.
+
+Deploy the API first using the backend repository's `render.yaml` and Dockerfile. Add the database and token secrets in the backend service's Render environment; do not commit `.env` files or production secrets. After the frontend has a URL, set the backend's `CORS_ORIGIN` to that exact URL and redeploy the backend.
+
+For manual setup, create a Render Static Site with root directory `.`, build command `npm ci && npm run build`, publish directory `dist`, and environment variable `VITE_API_URL=https://<your-api>.onrender.com`.
